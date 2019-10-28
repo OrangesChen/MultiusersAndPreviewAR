@@ -229,7 +229,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate{
     var mapProvider: MCPeerID?
     
     func receivedData(_ data: Data, from peer: MCPeerID) {
-        if let unarchived = try? NSKeyedUnarchiver.unarchivedObject(of: ARWorldMap.classForKeyedUnarchiver(), from: data),
+        if let unarchived = try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [ARWorldMap.classForKeyedUnarchiver()], from: data),
             let worldMap = unarchived as? ARWorldMap {
             // Run the session with the received world map
             let configuration = ARWorldTrackingConfiguration()
@@ -239,7 +239,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate{
             // Remember who provided the map for showing UI feedback
             mapProvider = peer
         } else {
-            if let unarchived = try? NSKeyedUnarchiver.unarchivedObject(of: ARAnchor.classForKeyedUnarchiver(), from: data),
+            if let unarchived = try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [ARAnchor.classForKeyedUnarchiver()], from: data),
                 let anchor = unarchived as? ARAnchor {
                 sceneView.session.add(anchor: anchor)
             } else {
